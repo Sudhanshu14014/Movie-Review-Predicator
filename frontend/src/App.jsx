@@ -20,7 +20,7 @@ function App() {
 
     const handleSubmitReview = () => {
         setFlag(1);
-        fetch("http://127.0.0.1:8080/predict", {
+        fetch("https://movie-review-sentiment.onrender.com/", {
             method: "POST",
             body: JSON.stringify({ text: userReview }),
             headers: {
