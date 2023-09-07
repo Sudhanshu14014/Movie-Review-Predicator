@@ -6,15 +6,20 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import star from "./assets/star.jpg";
+import sad from "./assets/sad.png";
+import smile from "./assets/smile.png";
 import alt from "./assets/alt.png";
 
 function App() {
     const [data, setData] = useState([]);
     const [userReview, setUserReview] = useState("");
+    const [sentiment, setSentiment] = useState();
+    const [flag, setFlag] = useState(0);
 
     let DEFAULT_IMG = alt;
 
     const handleSubmitReview = () => {
+        setFlag(1);
         fetch("http://127.0.0.1:8080/predict", {
             method: "POST",
             body: JSON.stringify({ text: userReview }),
@@ -28,8 +33,12 @@ function App() {
                 }
                 return response.json();
             })
-            .then((data) => {
-                console.log(data);
+            .then((data0) => {
+                let temp = data0["sentiment"];
+                temp = temp.slice(2, -2);
+                temp = parseFloat(temp);
+                setSentiment(temp);
+                setFlag(2);
             });
     };
 
@@ -144,7 +153,43 @@ function App() {
                         );
                     })}
                 </Slider>
-                <div className="output-container"></div>
+                <div className="output-container">
+                    {flag != 0 && (
+                        <div className="output-div">
+                            {flag == 1 ? (
+                                <div className="responseBox">
+                                    <div className="loading">
+                                        <span className="loading__dot"></span>
+                                        <span className="loading__dot"></span>
+                                        <span className="loading__dot"></span>
+                                    </div>
+                                </div>
+                            ) : flag == 2 && sentiment > 0.5 ? (
+                                <div className="responseBox">
+                                    {" "}
+                                    <img
+                                        className="respface"
+                                        src={smile}
+                                        alt="star"
+                                    />
+                                    <p>Thank you for your positive response!</p>
+                                </div>
+                            ) : (
+                                <div className="responseBox">
+                                    <img
+                                        className="respface"
+                                        src={sad}
+                                        alt="star"
+                                    />
+                                    <p>
+                                        Sorry to hear that you did not like the
+                                        movie!
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className="footer">
