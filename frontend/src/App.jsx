@@ -43,23 +43,22 @@ function App() {
     };
 
     useEffect(() => {
-        Papa.parse(
-            "https://raw.githubusercontent.com/shudhanshurp/Movie-Review-Predicator/master/frontend/src/MovieGenre.csv",
-            {
-                header: true,
-                download: true,
-                dynamicTyping: true,
-                skipEmptyLines: true,
-                complete: function (results) {
-                    setData(results.data.slice(0, 100));
-                },
-                error: function (error) {
-                    console.error("Error parsing CSV:", error);
-                },
-            }
-        );
-    });
+        const csvUrl =
+            "https://raw.githubusercontent.com/shudhanshurp/Movie-Review-Predicator/master/frontend/src/MovieGenre.csv";
 
+        Papa.parse(csvUrl, {
+            header: true,
+            download: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+                setData(results.data.slice(0, 100));
+            },
+            error: function (error) {
+                console.error("Error parsing CSV:", error);
+            },
+        });
+    }, []);
     const settings = {
         dots: false,
         infinite: true,
