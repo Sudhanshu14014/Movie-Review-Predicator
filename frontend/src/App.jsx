@@ -47,6 +47,7 @@ function App() {
             "https://raw.githubusercontent.com/shudhanshurp/Movie-Review-Predicator/master/frontend/src/MovieGenre.csv";
 
         Papa.parse(csvUrl, {
+            encoding: "UTF-8",
             header: true,
             download: true,
             dynamicTyping: true,
