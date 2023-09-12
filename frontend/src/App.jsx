@@ -20,7 +20,7 @@ function App() {
 
     const handleSubmitReview = () => {
         setFlag(1);
-        fetch("https://movie-review-sentiment.onrender.com/", {
+        fetch("https://movie-review-sentiment.onrender.com/predict", {
             method: "POST",
             body: JSON.stringify({ text: userReview }),
             headers: {
